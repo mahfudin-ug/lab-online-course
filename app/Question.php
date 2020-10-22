@@ -15,7 +15,7 @@ class Question extends Model
     const STATUS_CLOSE = 'CLOSE';
     const STATUS_SOLVED = 'SOLVED';
 
-    public function creator()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

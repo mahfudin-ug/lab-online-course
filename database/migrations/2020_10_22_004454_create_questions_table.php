@@ -21,7 +21,7 @@ class CreateQuestionsTable extends Migration
 
             $table->string('title');
             $table->text('desc');
-            $table->text('helpful')->nullable();
+            $table->text('helpful')->default('[]');
             $table->tinyInteger('featured')->default(0);
             $table->string('status')->default(Question::STATUS_OPEN);
 
