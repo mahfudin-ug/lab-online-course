@@ -25,6 +25,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\AnswerCreatedEvent' => [
             'App\Listeners\SendEmailAnswerCreated',
         ],
+        // 'App\Events\CourseCreatedEvent' => [
+        //     'App\Listeners\SendEmailCourseCreated',
+        // ],
     ];
 
     /**

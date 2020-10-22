@@ -34,3 +34,20 @@ Route::group([
     Route::delete('/answer/{answer}', 'AnswerController@destroy');
 });
 
+Route::group([
+    'prefix' => 'course'
+], function() {
+
+    Route::get('/', 'CourseController@index');
+    Route::post('/', 'CourseController@store');
+    Route::get('/{course}', 'CourseController@show');
+    Route::put('/{course}', 'CourseController@update');
+    Route::delete('/{course}', 'CourseController@destroy');
+
+    Route::post('/{course}/content', 'ContentController@store');
+    Route::get('/content/{content}', 'ContentController@show');
+    Route::put('/content/{content}', 'ContentController@update');
+    Route::delete('/content/{content}', 'ContentController@destroy');
+
+});
+

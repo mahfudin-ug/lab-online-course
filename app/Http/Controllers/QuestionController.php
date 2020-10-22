@@ -7,7 +7,6 @@ use App\Http\Resources\QuestionResource;
 use App\Question;
 use App\User;
 use Illuminate\Http\Request;
-use phpDocumentor\Reflection\Types\Boolean;
 
 class QuestionController extends Controller
 {

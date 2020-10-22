@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Instructor;
 use App\Providers\RouteServiceProvider;
+use App\Student;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
@@ -53,6 +55,9 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'role' => ['required', 'in:STUDENT,INSTRUCTOR'],
+            'phone' => ['nullable', 'string', 'min:5'],
+            'address' => ['nullable', 'string', 'min:5'],
         ]);
     }
 
@@ -64,10 +69,31 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        if ($data['role'] === User::ROLE_INSTRUCTOR) {
+            Instructor::create([
+                'phone' => $data['phone'],
+                'email' => $data['email'],
+                'address' => $data['address'],
+                'user_id' => $user->id,
+            ]);
+
+            return $user->load('instructor');
+        } else {
+            Student::create([
+                'name' => $data['name'],
+                'phone' => $data['phone'],
+                'email' => $data['email'],
+                'address' => $data['address'],
+                'user_id' => $user->id,
+            ]);
+
+            return $user->load('student');
+        }
     }
 }
