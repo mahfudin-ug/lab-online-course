@@ -20,6 +20,12 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
+        User::create([
+            'name' => 'Admin',
+            'email' => env('APP_MAIL_ADMIN'),
+            'password' => bcrypt('passowrd'),
+            'role' => User::ROLE_ADMIN
+        ]);
         \Factory(User::class, 10)->create();
         \Factory(Instructor::class, 5)->create();
         \Factory(Student::class, 10)->create();
