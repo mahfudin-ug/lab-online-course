@@ -11,8 +11,9 @@ class User extends Authenticatable
 {
     use Notifiable, HasUuidPrimary;
 
-    const ROLE_USER = 'USER';
     const ROLE_ADMIN = 'ADMIN';
+    const ROLE_INSTRUCTOR = 'INSTRUCTOR';
+    const ROLE_STUDENT = 'STUDENT';
 
 
     /**
@@ -41,4 +42,24 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function student()
+    {
+        return $this->hasOne(Student::class);
+    }
+
+    public function instructor()
+    {
+        return $this->hasOne(Instructor::class);
+    }
+
+    public function questions()
+    {
+        return $this->hasMany(Question::class, 'created_by');
+    }
+
+    public function answers()
+    {
+        return $this->hasMany(Answer::class, 'created_by');
+    }
 }
