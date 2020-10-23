@@ -19,6 +19,16 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('style')
+
+    <script>
+        window.Laravel = {!! json_encode([
+            'user' => [
+                'name' => auth()->check() ? auth()->user()->name : null,
+                'role' => auth()->check() ? auth()->user()->role : null,
+                'id' => auth()->check() ? auth()->user()->id : null,
+            ]
+        ]) !!}
+    </script>
 </head>
 <body>
     <div id="app">

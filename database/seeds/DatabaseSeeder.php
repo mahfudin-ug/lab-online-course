@@ -1,6 +1,7 @@
 <?php
 
 use App\Answer;
+use App\Chat;
 use App\Content;
 use App\Course;
 use App\Instructor;
@@ -37,5 +38,7 @@ class DatabaseSeeder extends Seeder
             $student->courses()->save(Course::all()->random());
             $student->courses()->save(Course::all()->random());
         }
+
+        \Factory(Chat::class, 50)->create();
     }
 }

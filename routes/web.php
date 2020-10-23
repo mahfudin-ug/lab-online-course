@@ -14,33 +14,29 @@ $ADMIN = App\User::ROLE_ADMIN;
 $INSTRUCTOR = App\User::ROLE_INSTRUCTOR;
 $STUDENT = App\User::ROLE_STUDENT;
 
-Route::get('/', function () { return view('landing'); })->name('welcome');
+Route::view('/', 'landing')->name('welcome');
 Route::get('/course/{course}', function ($course) { return view('course.course-show', compact('course')); })->name('course::show');
 
 Route::middleware("role:$ADMIN")->group(function() {
-    Route::get('qna', function () { return view('qna.question-list'); })->name('qna::list');
+    Route::view('qna', 'qna.question-list')->name('qna::list');
 });
 
-Route::get('/log-activity', function () { return view('log-activity.log-list'); })->name('log::list');
-
-Route::get('/qna/create', function () { return view('qna.question-create'); })->name('qna::create');
-
-Route::get('/my-course', function () { return view('course.course-list'); })->name('course::list');
-
+Route::view('/log-activity', 'log-activity.log-list')->name('log::list');
+Route::view('/qna/create', 'qna.question-create')->name('qna::create');
+Route::view('/my-course', 'course.course-list')->name('course::list');
 Route::get('/my-course/{course}', function ($course) { return view('course.course-forum', compact('course')); })->name('course::forum');
-
 
 // Course List (Course student, course instructor (edit))
 
 // Course Form (Create, edit)
 // [OK] Course Detail (join chat)
-// Course chat
 
 // Payment
 Route::get('/test', function () { return dd(\Auth::user()->student); });
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
+
 
 
 /**
@@ -83,3 +79,10 @@ Route::group([
 
 });
 
+Route::group([
+    'prefix' => '/api/chat',
+    'middleware' => 'auth'
+], function() {
+    Route::get('/', 'ChatController@index');
+    Route::post('/', 'ChatController@store');
+});

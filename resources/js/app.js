@@ -31,6 +31,12 @@ Vue.component('question-create', require('./components/Question/QuestionCreate.v
 
 Vue.component('log-list', require('./components/Log/LogList.vue').default);
 
+//
+Vue.component('chat-box', require('./components/chat/ChatBoxComponent.vue').default);
+Vue.component('chat-user-list', require('./components/chat/ChatUserListComponent.vue').default);
+Vue.component('chat-message', require('./components/chat/ChatMessageComponent.vue').default);
+Vue.component('chat-form', require('./components/chat/ChatFormComponent.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

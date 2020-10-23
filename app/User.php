@@ -62,4 +62,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Answer::class, 'created_by');
     }
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class);
+    }
 }

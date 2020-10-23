@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div class="container" v-if="course.instructor && course.contents">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="jumbotron">
@@ -7,7 +7,8 @@
                     <p class="lead">By {{ course.instructor.name }}</p>
                     <hr class="my-4">
                     <p>{{ course.desc }}</p>
-                    <a @click="registerCourse" v-if="!isJoin" class="btn btn-primary btn-lg" role="button">Register Now</a>
+                    <a @click="registerCourse" v-if="!isJoin" class="btn btn-success btn-lg" role="button">Register Now</a>
+                    <a v-else :href="`/my-course/${course.slug}`" class="btn btn-primary btn-lg" role="button">Join Chat</a>
                 </div>
 
                 <div class="accordion" id="accordionExample">
@@ -16,9 +17,9 @@
                     <div class="card" v-for="(content, index) in course.contents" :key="index">
                         <div class="card-header" :id="'heading'+ index">
                         <h2 class="mb-0">
-                            <button class="btn btn-link btn-block text-left collapsed" type="button" data-toggle="collapse" :data-target="'#collapse'+ index" aria-expanded="false" :aria-controls="'collapse'+ index">
+                            <h4 class="text-left collapsed" type="button" data-toggle="collapse" :data-target="'#collapse'+ index" aria-expanded="false" :aria-controls="'collapse'+ index">
                             {{ content.title }}
-                            </button>
+                            </h4>
                         </h2>
                         </div>
                         <div :id="'collapse'+ index" class="collapse" :aria-labelledby="'heading'+ index">
@@ -53,7 +54,9 @@
                 axios.get(`/api/course/${this.courseId}`).then(res => {
                     this.course = res.data
 
-                    console.log(this.course)
+                    this.isJoin = Laravel.user.role == 'ADMIN';
+                    this.isJoin = this.course.related_users.includes(Laravel.user.id);
+
                 })
             },
 

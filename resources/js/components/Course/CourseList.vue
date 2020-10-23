@@ -42,11 +42,18 @@
                     <h1 v-else>No Course Yet</h1>
                     <div class="card" v-for="(course, index) in courses" :key="index">
                         <div class="card-header" :id="'heading'+ index">
-                        <h2 class="mb-0">
-                            <h4 class=" text-left collapsed" type="button" data-toggle="collapse" :data-target="'#collapse'+ index" aria-expanded="false" :aria-controls="'collapse'+ index">
-                            {{ course.title }}
-                            </h4>
-                        </h2>
+                            <div class="d-flex w-100 justify-content-between">
+                                <h2 class="mb-0">
+                                    <h4 class=" text-left collapsed" type="button" data-toggle="collapse" :data-target="'#collapse'+ index" aria-expanded="false" :aria-controls="'collapse'+ index">
+                                    {{ course.title }}
+                                    </h4>
+                                </h2>
+
+                                <div class="button-wrapper">
+                                    <a v-if="isInstructor" href="#" class="btn btn-sm btn-success">Edit</a>
+                                    <a :href="`/my-course/${course.slug}`" class="btn btn-sm btn-primary">Chat</a>
+                                </div>
+                            </div>
                         </div>
                         <div :id="'collapse'+ index" class="collapse" :aria-labelledby="'heading'+ index">
                         <div class="card-body">

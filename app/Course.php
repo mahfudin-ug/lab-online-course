@@ -30,4 +30,9 @@ class Course extends Model
     {
         return $this->belongsToMany(Student::class);
     }
+
+    public function chats()
+    {
+        return $this->hasMany(Chat::class);
+    }
 }

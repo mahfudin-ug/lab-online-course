@@ -64,7 +64,12 @@ class CourseController extends Controller
     public function show(Course $course)
     {
 
-        $course->load('contents', 'instructor');
+        $course->load('contents', 'instructor', 'students');
+
+        $relatedUsers = $course->students->pluck('user_id')->toArray();
+        array_push($relatedUsers, $course->instructor->user_id);
+        $course->related_users = $relatedUsers;
+
         return new CourseResource($course);
     }
 
