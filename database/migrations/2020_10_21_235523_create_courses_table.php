@@ -23,6 +23,10 @@ class CreateCoursesTable extends Migration
             $table->text('desc');
             $table->tinyInteger('featured')->default(0);
 
+            $table->float('price')->default(0);
+            $table->date('started_at');
+            $table->date('ended_at');
+
             $table->timestamps();
         });
     }

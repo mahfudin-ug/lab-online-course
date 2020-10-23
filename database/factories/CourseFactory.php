@@ -9,12 +9,16 @@ use Faker\Generator as Faker;
 $factory->define(Course::class, function (Faker $faker) {
     $instructor = Instructor::all()->random();
     $title = $faker->sentence;
+    $date = $faker->date;
 
     return [
         'instructor_id' => $instructor->id,
-        'title' => $title,
+        'title' => 'Course '. $title,
         'slug' => \Str::slug($title),
         'desc' => $faker->paragraph,
-        'featured' => $faker->boolean
+        'featured' => $faker->boolean,
+        'price'=> $faker->numberBetween(10, 50) * 10000,
+        'started_at' => $date,
+        'ended_at' => $faker->dateTimeBetween($date, '+15 days')
     ];
 });

@@ -21,6 +21,16 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 
+Vue.component('course-popular', require('./components/Course/CoursePopular.vue').default);
+Vue.component('course-list', require('./components/Course/CourseList.vue').default);
+Vue.component('course-detail', require('./components/Course/CourseDetail.vue').default);
+Vue.component('course-forum', require('./components/Course/CourseForum.vue').default);
+
+Vue.component('question-list', require('./components/Question/QuestionList.vue').default);
+Vue.component('question-create', require('./components/Question/QuestionCreate.vue').default);
+
+Vue.component('log-list', require('./components/Log/LogList.vue').default);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

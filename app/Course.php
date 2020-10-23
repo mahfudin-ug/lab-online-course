@@ -21,13 +21,13 @@ class Course extends Model
         return $this->hasMany(Content::class);
     }
 
-    public function schedules()
-    {
-        return $this->hasMany(Schedule::class);
-    }
-
     public function instructor()
     {
         return $this->belongsTo(Instructor::class);
+    }
+
+    public function students()
+    {
+        return $this->belongsToMany(Student::class);
     }
 }

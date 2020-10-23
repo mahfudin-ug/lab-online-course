@@ -5,13 +5,39 @@ namespace App\Http\Controllers;
 use App\Course;
 use App\Http\Resources\CourseResource;
 use App\Instructor;
+use App\User;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
     public function index()
     {
-        $courses = Course::orderBy('created_at', 'desc')->withCount('contents')->get();
+        $currentUser = \Auth::user();
+
+        if ($currentUser == null) {
+            return response([], 401);
+        }
+
+        $courses = [];
+        if ($currentUser->role === User::ROLE_INSTRUCTOR) {
+            $courses = $currentUser->instructor->courses->load('instructor', 'contents');
+        }
+        if ($currentUser->role === User::ROLE_STUDENT) {
+            $courses = $currentUser->student->courses->load('instructor', 'contents');
+            // TODO need relation
+        }
+
+        return CourseResource::collection($courses);
+    }
+
+    public function popularIndex()
+    {
+        $courses = Course::where('featured', 1)
+            ->orderBy('created_at', 'desc')
+            ->with('instructor')
+            ->withCount('contents')
+            ->get()
+            ->take(4);
 
         return CourseResource::collection($courses);
     }
@@ -27,8 +53,7 @@ class CourseController extends Controller
             'title' => $request->title,
             'slug' => \Str::slug($request->title),
             'desc' => $request->desc,
-            // 'instructor_id' => auth()->user()->id,
-            'instructor_id' => Instructor::all()->random()->id,
+            'instructor_id' => auth()->user()->instructor->id,
         ]);
 
         // OPT: event(new CourseCreatedEvent($course));
@@ -39,7 +64,7 @@ class CourseController extends Controller
     public function show(Course $course)
     {
 
-        $course->load('contents');
+        $course->load('contents', 'instructor');
         return new CourseResource($course);
     }
 
@@ -70,5 +95,17 @@ class CourseController extends Controller
 
         $message = ['message' => "$courseOld->title has deleted"];
         return response()->json($message, 200);
+    }
+
+    public function register(Course $course)
+    {
+        $student = \Auth::user()->student;
+
+        if ($student == null) {
+            return response([], 401);
+        }
+        $newCourse = $student->courses()->save($course);
+
+        return new CourseResource($newCourse);
     }
 }

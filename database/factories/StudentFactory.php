@@ -7,7 +7,7 @@ use App\User;
 use Faker\Generator as Faker;
 
 $factory->define(Student::class, function (Faker $faker) {
-    $user = User::all()->random();
+    $user = User::where('role', User::ROLE_STUDENT)->get()->random();
 
     return [
         'user_id' => $user->id,

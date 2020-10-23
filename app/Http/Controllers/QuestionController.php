@@ -6,13 +6,16 @@ use App\Events\QuestionCreatedEvent;
 use App\Http\Resources\QuestionResource;
 use App\Question;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
     public function index()
     {
-        $questions = Question::orderBy('created_at', 'desc')->withCount('answers')->get();
+        $questions = Question::orderBy('created_at', 'desc')
+            ->with('answers.user', 'user')
+            ->get();
 
         return QuestionResource::collection($questions);
     }
@@ -39,6 +42,7 @@ class QuestionController extends Controller
     public function show(Question $question)
     {
         $question->load('answers');
+
         return new QuestionResource($question);
     }
 

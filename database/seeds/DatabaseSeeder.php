@@ -19,20 +19,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
         User::create([
             'name' => 'Admin',
-            'email' => env('APP_MAIL_ADMIN'),
-            'password' => bcrypt('passowrd'),
+            'email' => 'admin@example.co',
+            'password' => bcrypt('password'),
             'role' => User::ROLE_ADMIN
         ]);
-        \Factory(User::class, 10)->create();
+        \Factory(User::class, 20)->create();
         \Factory(Instructor::class, 5)->create();
         \Factory(Student::class, 10)->create();
         \Factory(Course::class, 10)->create();
         \Factory(Content::class, 50)->create();
-        \Factory(Schedule::class, 10)->create();
         \Factory(Question::class, 10)->create();
         \Factory(Answer::class, 50)->create();
+
+        foreach(Student::all() as $student) {
+            $student->courses()->save(Course::all()->random());
+            $student->courses()->save(Course::all()->random());
+        }
     }
 }

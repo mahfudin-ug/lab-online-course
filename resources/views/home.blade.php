@@ -13,8 +13,13 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    <div class="d-flex w-100 justify-content-between">
+                        <a class="btn btn-primary" href="{{ route('qna::list') }}">Question Management</a>
+                        {{-- <a class="btn btn-primary" href="{{ route('qna::list') }}">Course Management</a> --}}
+                        <a class="btn btn-primary" href="{{ route('course::list') }}">My Course</a>
+                        <a class="btn btn-primary" href="{{ route('log::list') }}">Log Activity</a>
+                    </div>
 
-                    You are logged in!
                 </div>
             </div>
         </div>
