@@ -7,8 +7,8 @@
                     <p class="lead">By {{ course.instructor.name }}</p>
                     <hr class="my-4">
                     <p>{{ course.desc }}</p>
-                    <a @click="registerCourse" v-if="!isJoin" class="btn btn-success btn-lg" role="button">Register Now</a>
-                    <a v-else :href="`/my-course/${course.slug}`" class="btn btn-primary btn-lg" role="button">Join Chat</a>
+                    <a @click="registerCourse" v-if="!showJoin" class="btn btn-success btn-lg" role="button">Register Now</a>
+                    <a v-if="showJoin" :href="`/my-course/${course.slug}`" class="btn btn-primary btn-lg" role="button">Join Chat</a>
 
                     <a @click="handlePayButton" class="btn btn-danger btn-lg" role="button">Pay Now</a>
                 </div>
@@ -43,12 +43,14 @@
         data() {
             return {
                 course: {},
-                isJoin: false,
+                showJoin: false,
+                showRegister: false,
+                showPay: false,
 
                 data_midtrans: {
                     'transaction_details' : {
                         'order_id': 'test-98241',
-                        'gross_amount': 44000
+                        'gross_amount': 99000
                     },
                     'customer_details': {
                         'first_name' : 'John',
@@ -68,9 +70,9 @@
             getCourse() {
                 axios.get(`/api/course/${this.courseId}`).then(res => {
                     this.course = res.data
-
-                    this.isJoin = Laravel.user.role == 'ADMIN';
-                    this.isJoin = this.course.related_users.includes(Laravel.user.id);
+                    this.showJoin = Laravel.user.role == 'ADMIN';
+                    this.showJoin = this.course.related_users.includes(Laravel.user.id);
+                    this.data_midtrans.transaction_details.gross_amount = this.course.price
 
                 })
             },
@@ -78,6 +80,7 @@
             registerCourse() {
                 axios.post(`/api/course/${this.courseId}/register`).then(res => {
                     console.log(res)
+                    this.showJoin = true
                 })
             },
 

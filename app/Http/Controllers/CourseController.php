@@ -6,6 +6,7 @@ use App\Course;
 use App\Http\Resources\CourseResource;
 use App\Instructor;
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -53,6 +54,8 @@ class CourseController extends Controller
             'title' => $request->title,
             'slug' => \Str::slug($request->title),
             'desc' => $request->desc,
+            'started_at' => Carbon::now(),
+            'ended_at' => Carbon::now()->addDay(15),
             'instructor_id' => auth()->user()->instructor->id,
         ]);
 

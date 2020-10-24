@@ -1952,11 +1952,13 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       course: {},
-      isJoin: false,
+      showJoin: false,
+      showRegister: false,
+      showPay: false,
       data_midtrans: {
         'transaction_details': {
           'order_id': 'test-98241',
-          'gross_amount': 44000
+          'gross_amount': 99000
         },
         'customer_details': {
           'first_name': 'John',
@@ -1976,13 +1978,17 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get("/api/course/".concat(this.courseId)).then(function (res) {
         _this.course = res.data;
-        _this.isJoin = Laravel.user.role == 'ADMIN';
-        _this.isJoin = _this.course.related_users.includes(Laravel.user.id);
+        _this.showJoin = Laravel.user.role == 'ADMIN';
+        _this.showJoin = _this.course.related_users.includes(Laravel.user.id);
+        _this.data_midtrans.transaction_details.gross_amount = _this.course.price;
       });
     },
     registerCourse: function registerCourse() {
+      var _this2 = this;
+
       axios.post("/api/course/".concat(this.courseId, "/register")).then(function (res) {
         console.log(res);
+        _this2.showJoin = true;
       });
     },
     handlePayButton: function handlePayButton(e) {
@@ -2510,7 +2516,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('/api/question').then(function (res) {
-        _this.questions = res.data.splice(0, 4);
+        _this.questions = res.data;
 
         _this.questions.foreach(function (q) {
           return q.push({
@@ -2532,21 +2538,16 @@ __webpack_require__.r(__webpack_exports__);
 
       if (answer == '') {
         return;
-      } // let newChat = {
-      //     subject,
-      //     user: {
-      //         'name': Laravel.user.name
-      //     }
-      // }
-
+      }
 
       this.loadingForm = true;
       axios.post("/api/question/".concat(question.id, "/answer"), {
         answer: answer
       }).then(function (res) {
         console.log(res);
-        _this2.loadingForm = false; // BusEvent.$emit('chat.new', newChat);
-        // this.body = ''
+        _this2.loadingForm = false;
+
+        _this2.getCourseList();
       });
     }
   }
@@ -66677,7 +66678,7 @@ var render = function() {
               _vm._v(" "),
               _c("p", [_vm._v(_vm._s(_vm.course.desc))]),
               _vm._v(" "),
-              !_vm.isJoin
+              !_vm.showJoin
                 ? _c(
                     "a",
                     {
@@ -66687,7 +66688,10 @@ var render = function() {
                     },
                     [_vm._v("Register Now")]
                   )
-                : _c(
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.showJoin
+                ? _c(
                     "a",
                     {
                       staticClass: "btn btn-primary btn-lg",
@@ -66697,7 +66701,8 @@ var render = function() {
                       }
                     },
                     [_vm._v("Join Chat")]
-                  ),
+                  )
+                : _vm._e(),
               _vm._v(" "),
               _c(
                 "a",
@@ -67510,7 +67515,10 @@ var render = function() {
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "accordion", attrs: { id: "accordionExample" } },
+          {
+            staticClass: "accordion list-box",
+            attrs: { id: "accordionExample" }
+          },
           [
             _vm.questions.length > 0
               ? _c("h1", [_vm._v("Please help them: ")])
