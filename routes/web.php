@@ -19,19 +19,19 @@ Route::get('/course/{course}', function ($course) { return view('course.course-s
 
 Route::middleware("role:$ADMIN")->group(function() {
     Route::view('qna', 'qna.question-list')->name('qna::list');
+    Route::view('/log-activity', 'log-activity.log-list')->name('log::list');
 });
 
-Route::view('/log-activity', 'log-activity.log-list')->name('log::list');
+Route::middleware("auth")->group(function() {
+    Route::get('/my-course/{course}', function ($course) { return view('course.course-forum', compact('course')); })->name('course::forum');
+});
+
 Route::view('/qna/create', 'qna.question-create')->name('qna::create');
 Route::view('/my-course', 'course.course-list')->name('course::list');
-Route::get('/my-course/{course}', function ($course) { return view('course.course-forum', compact('course')); })->name('course::forum')->middleware('auth');
-
-Route::get('/test', function () { return dd(\Auth::user()->actions); });
+Route::post('/api/payment/generate', 'PaymentController@generate');
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
-
-Route::post('/api/payment/generate', 'PaymentController@generate');
 
 
 /**
