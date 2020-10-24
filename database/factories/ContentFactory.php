@@ -11,7 +11,7 @@ $factory->define(Content::class, function (Faker $faker) {
 
     return [
         'course_id' => Course::all()->random()->id,
-        'title' => 'Learn '. $title,
+        'title' => 'Content - '. $title,
         'slug' => \Str::slug($title),
         'desc' => $faker->paragraph,
     ];

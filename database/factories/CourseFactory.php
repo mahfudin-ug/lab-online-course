@@ -13,7 +13,7 @@ $factory->define(Course::class, function (Faker $faker) {
 
     return [
         'instructor_id' => $instructor->id,
-        'title' => 'Course '. $title,
+        'title' => 'Course - '. $title,
         'slug' => \Str::slug($title),
         'desc' => $faker->paragraph,
         'featured' => $faker->boolean,

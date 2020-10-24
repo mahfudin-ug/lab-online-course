@@ -7,7 +7,7 @@
                     <p class="lead">Answer with simple and understandable</p>
                 </div>
 
-                <div class="accordion" id="accordionExample">
+                <div class="accordion list-box" id="accordionExample">
                     <h1 v-if="questions.length > 0">Please help them: </h1>
                     <h1 v-else>No question. So enjoy your time.</h1>
                     <div class="card" v-for="(question, index) in questions" :key="index">
@@ -74,7 +74,7 @@
         methods: {
             getCourseList() {
                 axios.get('/api/question').then(res => {
-                    this.questions = res.data.splice(0, 4)
+                    this.questions = res.data
                     this.questions.foreach(q => q.push({ answerInput: '' }))
 
                 })
@@ -94,19 +94,12 @@
                     return
                 }
 
-                // let newChat = {
-                //     subject,
-                //     user: {
-                //         'name': Laravel.user.name
-                //     }
-                // }
                 this.loadingForm = true
                 axios.post(`/api/question/${question.id}/answer`, {answer})
                     .then(res => {
                         console.log(res)
                         this.loadingForm = false
-                        // BusEvent.$emit('chat.new', newChat);
-                        // this.body = ''
+                        this.getCourseList()
                     })
 
             }
