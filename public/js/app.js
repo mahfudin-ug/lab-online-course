@@ -2301,13 +2301,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      questions: [],
+      logs: [],
       loadingAnswer: false
     };
   },
@@ -2318,14 +2315,8 @@ __webpack_require__.r(__webpack_exports__);
     getCourseList: function getCourseList() {
       var _this = this;
 
-      axios.get('/api/question').then(function (res) {
-        _this.questions = res.data.splice(0, 4);
-
-        _this.questions.foreach(function (q) {
-          return q.push({
-            answerInput: ''
-          });
-        });
+      axios.get('/api/log').then(function (res) {
+        _this.logs = res.data;
       });
     }
   }
@@ -67234,8 +67225,11 @@ var render = function() {
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "accordion", attrs: { id: "accordionExample" } },
-          _vm._l(_vm.questions, function(question, index) {
+          {
+            staticClass: "accordion list-box",
+            attrs: { id: "accordionExample" }
+          },
+          _vm._l(_vm.logs, function(log, index) {
             return _c("div", { key: index, staticClass: "card" }, [
               _c(
                 "div",
@@ -67244,12 +67238,11 @@ var render = function() {
                   attrs: { id: "heading" + index }
                 },
                 [
-                  _c("h2", { staticClass: "mb-0" }, [
+                  _c("p", { staticClass: "mb-0" }, [
                     _c(
                       "button",
                       {
-                        staticClass:
-                          "btn btn-link btn-block text-left collapsed",
+                        staticClass: "btn btn-block text-left collapsed",
                         attrs: {
                           type: "button",
                           "data-toggle": "collapse",
@@ -67267,13 +67260,15 @@ var render = function() {
                           [
                             _c("p", { staticClass: "mb-1" }, [
                               _c("span", { staticClass: "text-muted" }, [
-                                _vm._v(_vm._s(question.created_at) + " : ")
+                                _vm._v(_vm._s(log.created_at) + " : ")
                               ]),
-                              _vm._v(_vm._s(question.title))
+                              _vm._v(_vm._s(log.description))
                             ]),
                             _vm._v(" "),
                             _c("small", { staticClass: "text-muted" }, [
-                              _vm._v("Causer")
+                              _vm._v(
+                                _vm._s(log.causer ? log.causer.name : "SYSTEM")
+                              )
                             ])
                           ]
                         )
@@ -67293,13 +67288,20 @@ var render = function() {
                   }
                 },
                 [
-                  _c("div", { staticClass: "card-body" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(question.desc) +
-                        "\n\n                    "
-                    )
-                  ])
+                  _c(
+                    "p",
+                    {
+                      staticClass: "card-body",
+                      staticStyle: { "white-space": "pre-wrap" }
+                    },
+                    [
+                      _vm._v(
+                        "\n                        " +
+                          _vm._s(log.properties) +
+                          "\n\n                    "
+                      )
+                    ]
+                  )
                 ]
               )
             ])

@@ -6,3 +6,8 @@
 
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
+
+.list-box {
+    max-height: 100vh;
+    overflow: scroll;
+}

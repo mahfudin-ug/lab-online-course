@@ -6,15 +6,24 @@ use App\Helper\HasUuidPrimary;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\Traits\CausesActivity;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasUuidPrimary;
+    use Notifiable, HasUuidPrimary, LogsActivity, CausesActivity;
 
     const ROLE_ADMIN = 'ADMIN';
     const ROLE_INSTRUCTOR = 'INSTRUCTOR';
     const ROLE_STUDENT = 'STUDENT';
 
+    protected static $logFillable = true;
+    protected static $logUnguarded = true;
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "User has been {$eventName}";
+    }
 
     /**
      * The attributes that are mass assignable.
