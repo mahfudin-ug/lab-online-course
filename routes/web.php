@@ -26,13 +26,12 @@ Route::view('/qna/create', 'qna.question-create')->name('qna::create');
 Route::view('/my-course', 'course.course-list')->name('course::list');
 Route::get('/my-course/{course}', function ($course) { return view('course.course-forum', compact('course')); })->name('course::forum')->middleware('auth');
 
-// Payment
-
 Route::get('/test', function () { return dd(\Auth::user()->actions); });
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
+Route::post('/api/payment/generate', 'PaymentController@generate');
 
 
 /**

@@ -1945,12 +1945,26 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['courseId'],
   data: function data() {
     return {
       course: {},
-      isJoin: false
+      isJoin: false,
+      data_midtrans: {
+        'transaction_details': {
+          'order_id': 'test-98241',
+          'gross_amount': 44000
+        },
+        'customer_details': {
+          'first_name': 'John',
+          'last_name': 'Doe',
+          'email': 'john.doe@email.co',
+          'phone': '098123123123'
+        }
+      }
     };
   },
   mounted: function mounted() {
@@ -1969,6 +1983,18 @@ __webpack_require__.r(__webpack_exports__);
     registerCourse: function registerCourse() {
       axios.post("/api/course/".concat(this.courseId, "/register")).then(function (res) {
         console.log(res);
+      });
+    },
+    handlePayButton: function handlePayButton(e) {
+      console.log('hi');
+      this.data_midtrans.transaction_details.order_id = "test-".concat(new Date().getTime());
+      axios.post('/api/payment/generate', {
+        data: this.data_midtrans
+      }).then(function (res) {
+        console.log(res);
+        snap.pay(res.data.data.token);
+      }, function (err) {
+        console.log('error : ' + err);
       });
     }
   }
@@ -66671,7 +66697,17 @@ var render = function() {
                       }
                     },
                     [_vm._v("Join Chat")]
-                  )
+                  ),
+              _vm._v(" "),
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-danger btn-lg",
+                  attrs: { role: "button" },
+                  on: { click: _vm.handlePayButton }
+                },
+                [_vm._v("Pay Now")]
+              )
             ]),
             _vm._v(" "),
             _c(

@@ -9,6 +9,8 @@
                     <p>{{ course.desc }}</p>
                     <a @click="registerCourse" v-if="!isJoin" class="btn btn-success btn-lg" role="button">Register Now</a>
                     <a v-else :href="`/my-course/${course.slug}`" class="btn btn-primary btn-lg" role="button">Join Chat</a>
+
+                    <a @click="handlePayButton" class="btn btn-danger btn-lg" role="button">Pay Now</a>
                 </div>
 
                 <div class="accordion" id="accordionExample">
@@ -41,7 +43,20 @@
         data() {
             return {
                 course: {},
-                isJoin: false
+                isJoin: false,
+
+                data_midtrans: {
+                    'transaction_details' : {
+                        'order_id': 'test-98241',
+                        'gross_amount': 44000
+                    },
+                    'customer_details': {
+                        'first_name' : 'John',
+                        'last_name' : 'Doe',
+                        'email' : 'john.doe@email.co',
+                        'phone' : '098123123123',
+                    }
+                }
             }
         },
 
@@ -64,7 +79,19 @@
                 axios.post(`/api/course/${this.courseId}/register`).then(res => {
                     console.log(res)
                 })
-            }
+            },
+
+            handlePayButton: function (e) {
+                console.log('hi')
+                this.data_midtrans.transaction_details.order_id = `test-${new Date().getTime()}`
+                axios.post('/api/payment/generate', { data: this.data_midtrans}).then(res => {
+console.log(res)
+                    snap.pay(res.data.data.token);
+
+                }, err => {
+                    console.log('error : ' + err)
+                });
+            },
         }
     }
 </script>

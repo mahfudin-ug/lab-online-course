@@ -12,6 +12,7 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "^6.18.35",
         "laravel/tinker": "^2.0",
+        "midtrans/midtrans-php": "^2.3",
         "pusher/pusher-php-server": "~4.0",
         "spatie/laravel-activitylog": "^3.16",
         "tymon/jwt-auth": "1.0.0"
