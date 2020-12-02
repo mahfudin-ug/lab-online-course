@@ -28,9 +28,8 @@ Route::middleware("auth")->group(function() {
 
 Route::view('/qna/create', 'qna.question-create')->name('qna::create');
 Route::view('/my-course', 'course.course-list')->name('course::list');
-Route::post('/api/payment/generate', 'PaymentController@generate');
 
-Auth::routes();
+Auth::routes(); // ~/vendor/laravel/framework/src/Illuminate/Routing/Router.php
 Route::get('/home', 'HomeController@index')->name('home');
 
 
@@ -83,3 +82,5 @@ Route::group([
 });
 
 Route::get('/api/log', 'LogController@index');
+
+Route::post('/api/payment/generate', 'PaymentController@generate');

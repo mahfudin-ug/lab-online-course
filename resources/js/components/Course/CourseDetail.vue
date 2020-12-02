@@ -85,10 +85,9 @@
             },
 
             handlePayButton: function (e) {
-                console.log('hi')
                 this.data_midtrans.transaction_details.order_id = `test-${new Date().getTime()}`
                 axios.post('/api/payment/generate', { data: this.data_midtrans}).then(res => {
-console.log(res)
+
                     snap.pay(res.data.data.token);
 
                 }, err => {
